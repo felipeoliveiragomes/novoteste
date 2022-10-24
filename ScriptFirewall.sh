@@ -16,5 +16,13 @@ iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
 
 iptables -A INPUT -p icmp --icmp-type echo-reply -j ACCEPT
 
+iptables -A INPUT -p tcp --dport 21 -j ACCEPT
+
+iptables -A INPUT -p tcp --dport 25 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+
+
+iptables -A INPUT -p tcp --dport 143 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+
+
 
 iptables -F INPUT
