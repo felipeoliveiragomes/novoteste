@@ -1,6 +1,12 @@
 #!/bin/bash
 
+iptables -F INPUT
+iptables -F OUTPUT
+iptables -F FOWARD
+
 iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FOWARD DROP
 
 # Para liberar o SSH
 iptables -A INPUT -p tcp --dport 22 -j ACCEPT   
