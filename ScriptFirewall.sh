@@ -1,16 +1,17 @@
 #!/bin/bash
 
+iptables -P  INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD DROP
+
 iptables -F INPUT
 iptables -F OUTPUT
-iptables -F FOWARD
+iptables -F FORWARD
 
-iptables -P INPUT DROP
-iptables -P OUTPUT DROP
-iptables -P FOWARD DROP
 
 # Para liberar o SSH
 iptables -A INPUT -p tcp --dport 22 -j ACCEPT   
-iptables -A INPUT -p tcp --sport 22 -j ACCEPT   
+iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT   
 
 
 #Para Liberar HTTP
@@ -21,10 +22,6 @@ iptables -A OUTPUT -m state --state NEW -p tcp --sport 80 -j ACCEPT
 iptables -A INPUT -m state --state NEW -p tcp --dport 443 -j ACCEPT
 iptables -A OUTPUT -m state --state NEW -p tcp --sport 443 -j ACCEPT
 
-
-# Permite para uma maquina especifica
-iptables -A INPUT -s  $IP -j ACCEPT
-iptables -A OUTPUT -d  $IP -j ACCEPT
 
 #para liberar a requisiscao de icmp
 
@@ -50,7 +47,7 @@ iptables -A OUTPUT -p tcp --sport 143  -j ACCEPT
 
 
 
-iptables -F INPUT
+
 
 
 #https://www.digitalocean.com/community/tutorials/iptables-essentials-common-firewall-rules-and-commands
