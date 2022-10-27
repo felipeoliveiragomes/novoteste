@@ -1,9 +1,3 @@
-#!/bin/bash
-
-iptables -P  INPUT DROP
-iptables -P OUTPUT DROP
-iptables -P FORWARD DROP
-
 iptables -F INPUT
 iptables -F OUTPUT
 iptables -F FORWARD
@@ -15,22 +9,20 @@ iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT
 
 
 #Para Liberar HTTP
-iptables -A INPUT -m state --state NEW -p tcp --dport 80 -j ACCEPT
-iptables -A OUTPUT -m state --state NEW -p tcp --sport 80 -j ACCEPT
+iptables -A INPUT  -p tcp --dport 80 -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 80 -j ACCEPT
 
 #Para liberar o HTTPS
-iptables -A INPUT -m state --state NEW -p tcp --dport 443 -j ACCEPT
-iptables -A OUTPUT -m state --state NEW -p tcp --sport 443 -j ACCEPT
+iptables -A INPUT  -p tcp --dport 443 -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 443 -j ACCEPT
 
 
 #para liberar a requisiscao de icmp
 
-iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
-iptables -A OUTPUT -p icmp --icmp-type echo-request -j ACCEPT
+iptables -A INPUT -p icmp  -j ACCEPT
+iptables -A OUTPUT -p icmp -j ACCEPT
 
-#Para liberar a resposta de icmp
-iptables -A INPUT -p icmp --icmp-type echo-reply -j ACCEPT
-iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
+
 
 #para liberar FTP
 iptables -A INPUT -p tcp --dport 21 -j ACCEPT
@@ -48,9 +40,14 @@ iptables -A OUTPUT -p tcp --sport 143  -j ACCEPT
 
 
 
+iptables -t nat -A POSTROUTING -o lo -j ACCEPT
 
+iptables -A INPUT -j LOG --log-prefix "FIREWALL: INPUT "
+iptables -A OUTPUT -j LOG --log-prefix "FIREWALL: INPUT "
+iptables -A FORWARD -j LOG --log-prefix "FIREWALL: FORWARD "
 
-#https://www.digitalocean.com/community/tutorials/iptables-essentials-common-firewall-rules-and-commands
-#https://serverfault.com/questions/38398/allowing-ftp-with-iptables
-#https://www.cyberciti.biz/tips/linux-iptables-9-allow-icmp-ping.html
-#https://serverfault.com/questions/163111/allow-traffic-to-from-specific-ip-with-iptables
+#Realiza os DROP
+iptables -P  INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD DROP
+
