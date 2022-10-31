@@ -39,9 +39,10 @@ iptables -A OUTPUT -p tcp --sport 143  -j ACCEPT
 
 
 
-
+# para liberar o loopback
 iptables -t nat -A POSTROUTING -o lo -j ACCEPT
 
+#para armazenar o log das cadeias
 iptables -A INPUT -j LOG --log-prefix "FIREWALL: INPUT "
 iptables -A OUTPUT -j LOG --log-prefix "FIREWALL: INPUT "
 iptables -A FORWARD -j LOG --log-prefix "FIREWALL: FORWARD "
